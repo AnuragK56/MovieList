@@ -32,7 +32,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: (user != null) == true ? HomePage() : LoginPage(),
-          theme: ThemeData(primarySwatch: Colors.purple),
+          theme: ThemeData(
+              primarySwatch: Colors.deepPurple,
+              primaryColor: Color.fromRGBO(98, 0, 238, 1),
+              accentColor: Color.fromRGBO(255, 108, 145, 0.6),
+              backgroundColor: Color.fromRGBO(244, 226, 211, 1)),
           routes: {
             LoginPage.routeName: (context) => LoginPage(),
             HomePage.routeName: (context) => HomePage(),

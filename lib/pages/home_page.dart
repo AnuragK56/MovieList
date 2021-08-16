@@ -1,5 +1,5 @@
-// import 'package:awesome_app/name_card_widget.dart';
 import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movielist/boxes.dart';
@@ -115,10 +115,72 @@ class _HomePageState extends State<HomePage> {
           },
         )
       ],
-      child: ListTile(
-        title: Text(movie.name),
-        subtitle: Text(movie.director),
-        leading: Image.file(File(movie.posterImage)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+        child: GestureDetector(
+          child: Container(
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).accentColor,
+              border: Border.all(
+                color: Color.fromRGBO(233, 233, 233, 1),
+              ),
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  height: 150,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color.fromRGBO(233, 233, 233, 1),
+                    ),
+                    image: DecorationImage(
+                      image: Image.file(File(movie.posterImage)).image,
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                SizedBox(
+                  width: 30.0,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        movie.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        movie.director,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -130,19 +192,10 @@ class _HomePageState extends State<HomePage> {
       print("USer loggedIn Successfully");
     }
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text("Movie List"),
-        //   actions: <Widget>[
-        //     IconButton(
-        //         onPressed: () {
-        //           final provider =
-        //               Provider.of<GoogleSignInProvider>(context, listen: false);
-        //           provider.logout();
-        //           Navigator.pushReplacementNamed(context, LoginPage.routeName);
-        //         },
-        //         icon: Icon(Icons.exit_to_app))
-        //   ],
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: FutureBuilder(
         future: Hive.openBox<MovieModel>('movielist'),
@@ -165,10 +218,14 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: MyDrawer(),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
           Navigator.pushReplacementNamed(context, AddMovie.routeName);
         },
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

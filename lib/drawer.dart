@@ -15,7 +15,7 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     print(user!.displayName);
-    return Drawer(
+    return Drawer( 
       child: ListView(
         padding: const EdgeInsets.all(0),
         children: <Widget>[
