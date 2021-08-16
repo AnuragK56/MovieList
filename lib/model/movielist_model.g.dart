@@ -18,7 +18,7 @@ class MovieModelAdapter extends TypeAdapter<MovieModel> {
     };
     return MovieModel(
       fields[0] as String,
-      fields[2] as Uint8List,
+      fields[2] as String,
       fields[1] as String,
     );
   }

@@ -1,24 +1,43 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:movielist/model/movielist_model.dart';
 import 'package:movielist/pages/home_page.dart';
 
-class AddMovie extends StatefulWidget {
-  static const String routeName = "/addmovie";
+class EditMovie extends StatefulWidget {
+  static const String routeName = "/EditMovie";
+  final MovieModel movie;
+  const EditMovie({Key? key, required this.movie}) : super(key: key);
   @override
-  _AddMovieState createState() => _AddMovieState();
+  _EditMovieState createState() => _EditMovieState();
 }
 
-class _AddMovieState extends State<AddMovie> {
+class _EditMovieState extends State<EditMovie> {
   final formKey = GlobalKey<FormState>();
-  final _movienameController = TextEditingController();
-  final _directorController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  final snackBar =
-      SnackBar(content: Text('Yay! Movie added to the list succesfully!'));
+  late TextEditingController _movienameController;
+  late TextEditingController _directorController;
+  late String prevImage;
+  String? prevMovie;
+  String? prevDirector;
+  MovieModel? _movie;
   XFile? image;
+  @override
+  void initState() {
+    super.initState();
+    print("Name" + widget.movie.name);
+
+    image = XFile(widget.movie.posterImage);
+    prevMovie = widget.movie.name;
+    prevDirector = widget.movie.director;
+    _movie = widget.movie;
+    _movienameController = TextEditingController(text: widget.movie.name);
+    _directorController = TextEditingController(text: widget.movie.director);
+  }
+
+  final snackBar = SnackBar(content: Text('Yay! Movie Edited succesfully!'));
+
   bool _autoValidate = false;
   bool validate() {
     if (formKey.currentState!.validate()) {
@@ -30,13 +49,15 @@ class _AddMovieState extends State<AddMovie> {
     }
   }
 
-  Future addMovie() async {
-    String imagePath = image!.path; // Uint8List
+  void editMovie() {
+    final file = image; // File
+    String imagePath = file!.path; // File // Uint8List
     var name = _movienameController.text;
     var director = _directorController.text;
-    final movie = MovieModel(name, imagePath, director);
-    final box = await Hive.openBox<MovieModel>('movielist');
-    box.add(movie);
+    _movie!.name = name;
+    _movie!.director = director;
+    _movie!.posterImage = imagePath;
+    _movie!.save();
   }
 
   void filePicker() async {
@@ -94,7 +115,7 @@ class _AddMovieState extends State<AddMovie> {
                         child: Column(
                           children: [
                             image == null
-                                ? Text("No Image Found")
+                                ? Image.file(File(prevImage))
                                 : Image.file(File(image!.path),
                                     width: 200, fit: BoxFit.cover),
                             TextButton(
@@ -134,10 +155,9 @@ class _AddMovieState extends State<AddMovie> {
                             // ignore: deprecated_member_use
                             RaisedButton(
                               onPressed: () {
-                                if (validate() && image != null) {
-                                  addMovie();
-                                  Navigator.pushReplacementNamed(
-                                      context, HomePage.routeName);
+                                if (validate() && (image != null)) {
+                                  editMovie();
+                                  Navigator.pop(context);
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);
                                 }
