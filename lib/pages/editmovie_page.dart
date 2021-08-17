@@ -74,7 +74,7 @@ class _EditMovieState extends State<EditMovie> {
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text("Add a new Movie"),
+          title: Text("Edit Movie"),
           backgroundColor: Theme.of(context).primaryColor,
           actions: <Widget>[
             Padding(
@@ -94,7 +94,6 @@ class _EditMovieState extends State<EditMovie> {
           ],
         ),
         body: Container(
-         
           child: Stack(
             fit: StackFit.expand,
             children: [
@@ -108,7 +107,6 @@ class _EditMovieState extends State<EditMovie> {
                     autovalidate: _autoValidate,
                     child: Center(
                       child: Card(
-                        
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
@@ -161,7 +159,7 @@ class _EditMovieState extends State<EditMovie> {
                                         .showSnackBar(snackBar);
                                   }
                                 },
-                                child: Text("Add to List"),
+                                child: Text("Save Changes"),
                                 color: Theme.of(context).primaryColor,
                                 textColor: Colors.white,
                               ),

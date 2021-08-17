@@ -54,14 +54,12 @@ class _HomePageState extends State<HomePage> {
     } else {
       return Column(
         children: [
-          SizedBox(height: 24),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(8),
               itemCount: movielist.length,
               itemBuilder: (BuildContext context, int index) {
                 MovieModel movie = movielist[index];
-
                 return buildMovie(context, movie);
               },
             ),
@@ -210,10 +208,22 @@ class _HomePageState extends State<HomePage> {
                       return buildContent(movielist);
                     })
                 : Center(
-                    child: CircularProgressIndicator(),
+                    child: Text(
+                      'No Movies added yet!',
+                      style: TextStyle(fontSize: 24),
+                    ),
                   );
+          } else if (snapshot.connectionState == ConnectionState.none) {
+            return Center(
+              child: Text(
+                'No Movies added yet!',
+                style: TextStyle(fontSize: 24),
+              ),
+            );
           } else
-            return Text("Loading");
+            return Center(
+              child: CircularProgressIndicator(),
+            );
         },
       ),
       drawer: MyDrawer(),
